@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <title th:text="#{test.title}">Default</title>
+    </head>
+    <body>
+        <p th:text="#{msg.test.item1}">Welcome.</p>
+        <ul class="nav">
+            <li class="nav-item">
+                <a class="nav-link active" href="/">Home</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/singer">Singer Input</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/multi">Multi Input</a>
+            </li>
+        </ul>
+        <ul class="list-group">
+            <li class="list-group-item" th:each="singer, status : ${singers}" th:text="${status.count} + ' : ' + ${singer.getFirstName()} + ' - ' + ${singer.getLastName()}">Cras justo odio</li>
+        </ul>
+        <br/><br/>
+        <ul class="list-group">
+            <li class="list-group-item" th:each="multikey, status : ${multikeys}" th:text="${status.count} + ' : ' + ${multikey.getValue()}">Cras justo odio</li>
+        </ul>
+    </body>
+    <script src="js/bootstrap.min.js" />
+</html>

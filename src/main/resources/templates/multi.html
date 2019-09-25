@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <title th:text="#{test.title}">Default</title>
+</head>
+<body>
+<form th:action="@{/multi}" th:object="${multiForm}" method="post">
+    <div class="form-group">
+        <label class="control-label" for="Key1"><abbr title="required">*</abbr> Key1</label>
+        <input type="text" class="form-control" id="Key1" name="firstName" th:field="*{key1}" />
+        <span th:if="${#fields.hasErrors('key1')}" th:errors="*{key1}" class="help-block">error!</span>
+    </div>
+    <div class="form-group">
+        <label class="control-label" for="Key2"><abbr title="required">*</abbr> Key2</label>
+        <input type="text" class="form-control" id="Key2" name="firstName" th:field="*{key2}" />
+        <span th:if="${#fields.hasErrors('key2')}" th:errors="*{key2}" class="help-block">error!</span>
+    </div>
+    <div class="form-group">
+        <label class="control-label" for="Key3"><abbr title="required">*</abbr> Key3</label>
+        <input type="text" class="form-control" id="Key3" name="firstName" th:field="*{key3}" />
+        <span th:if="${#fields.hasErrors('key3')}" th:errors="*{key3}" class="help-block">error!</span>
+    </div>
+    <div class="form-group">
+        <label class="control-label" for="Value"><abbr title="required">*</abbr> Value</label>
+        <input type="text" class="form-control" id="Value" name="firstName" th:field="*{value}" />
+        <span th:if="${#fields.hasErrors('value')}" th:errors="*{value}" class="help-block">error!</span>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+</body>
+<script src="js/bootstrap.min.js" />
+</html>
