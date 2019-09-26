@@ -2,12 +2,12 @@
 <html xmlns:th="http://www.thymeleaf.org">
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <link rel="stylesheet" href="/css/bootstrap.css">
         <title th:text="#{test.title}">Default</title>
     </head>
     <body>
         <div class="container">
-            <div class="row mt-2 mb-2" th:if="${persons}">
+            <div class="row mt-2 mb-2 mx-auto" th:if="${persons}">
                 <table class="table">
                     <thead class="thead-dark">
                         <tr>
@@ -24,22 +24,20 @@
                         </tr>
                     </tbody>
                 </table>
-            </div>
 
-            <div class="row mt-2 mb-2" th:if="${page.totalPages > 0}">
-                <div th:fragment='paginationbar'>
-                    <ul>
-                        <li th:class="${page.first} ? 'disabled':''" style="display:inline">
+                <div th:fragment='paginationbar' class="row col-sm-12 mx-auto">
+                    <ul class="list-group list-group-horizontal">
+                        <li class="list-group-item">
                             <span th:if="${page.first}">←先頭</span>
                             <a th:if="${not page.first}" th:href="@{/allperson/0}">←先頭</a>
                         </li>
-                        <li th:each='i : ${#numbers.sequence(0, page.totalPages-1)}' th:class="(${i}==${page.number})? 'active' : ''" style="display:inline">
+                        <li th:each='i : ${#numbers.sequence(0, page.totalPages-1)}' th:class="(${i}==${page.number})? 'active list-group-item' : 'list-group-item'">
                             <span th:if='${i}==${page.number}' th:text='${i+1}'>1</span>
                             <a th:if='${i}!=${page.number}' th:href="@{/allperson/{num}(num=${i})}">
                                 <span th:text='${i+1}'>1</span>
                             </a>
                         </li>
-                        <li th:class="${page.last} ? 'disabled':''" style="display:inline">
+                        <li class="list-group-item">
                             <span th:if="${page.last}">末尾➝</span>
                             <a th:if="${not page.last}" th:href="@{/allperson/{num}(num=${page.totalPages}-1)}">末尾➝</a>
                         </li>
@@ -48,5 +46,5 @@
             </div>
         </div>
     </body>
-    <script src="js/bootstrap.min.js" />
+    <script src="/js/bootstrap.js" />
 </html>
