@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="/css/bootstrap.css">
+    <title th:text="#{test.title}">Default</title>
+</head>
+<body>
+<div class="container">
+    <div class="row mt-2 mb-2 mx-auto" th:if="${users}">
+        <table class="table">
+            <thead class="thead-dark">
+            <tr>
+                <th scope="col">Id</th>
+                <th scope="col">Name</th>
+                <th scope="col">Email</th>
+                <th scope="col">Password</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="user : ${users}">
+                <th th:text="${user.id}">Id</th>
+                <td th:text="${user.name}">Mark</td>
+                <td th:text="${user.email}">Otto</td>
+                <td th:text="${user.password}">Otto</td>
+            </tr>
+            </tbody>
+        </table>
+
+        <div th:fragment='paginationbar' class="row col-sm-12 mx-auto" th:if="${page}">
+            <ul class="list-group list-group-horizontal">
+                <li class="list-group-item">
+                    <span th:if="${page.first}">←先頭</span>
+                    <a th:if="${not page.first}" th:href="@{/allperson/0}">←先頭</a>
+                </li>
+                <li th:each='i : ${#numbers.sequence(0, page.totalPages-1)}' th:class="(${i}==${page.number})? 'active list-group-item' : 'list-group-item'">
+                    <span th:if='${i}==${page.number}' th:text='${i+1}'>1</span>
+                    <a th:if='${i}!=${page.number}' th:href="@{/allperson/{num}(num=${i})}">
+                        <span th:text='${i+1}'>1</span>
+                    </a>
+                </li>
+                <li class="list-group-item">
+                    <span th:if="${page.last}">末尾➝</span>
+                    <a th:if="${not page.last}" th:href="@{/allperson/{num}(num=${page.totalPages}-1)}">末尾➝</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <form class="row mt-2 mb-2 mx-auto" th:action="@{/user/new}" th:object="${userForm}" method="post">
+        <div class="form-group">
+            <label class="control-label" for="name"><abbr title="required">*</abbr> Name</label>
+            <input type="text" class="form-control" id="name" name="name" th:field="*{name}" />
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="email"><abbr title="required">*</abbr> Email</label>
+            <input type="text" class="form-control" id="email" name="email" th:field="*{email}" />
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="password"><abbr title="required">*</abbr> Password</label>
+            <input type="text" class="form-control" id="password" name="password" th:field="*{password}" />
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>
+</body>
+<script src="/js/bootstrap.js" />
+</html>
