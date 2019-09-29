@@ -1,17 +1,32 @@
 package com.ki.config;
 
-import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
-import org.springframework.web.method.support.HandlerMethodArgumentResolver;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
+import com.ki.interceptor.LoginFilter;
+import com.ki.interceptor.LoginInterceptor;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.HandlerInterceptor;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import java.util.List;
+@Configuration
+public class WebMvcConfig implements WebMvcConfigurer {
 
-//@Configuration
-public class WebMvcConfig extends WebMvcConfigurationSupport {
+    @Bean
+    public HandlerInterceptor testInterceptor() {
+        return new LoginInterceptor();
+    }
+
     @Override
-    public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
-        PageableHandlerMethodArgumentResolver resolver = new PageableHandlerMethodArgumentResolver();
-        resolver.setMaxPageSize(2);   // NG
-        argumentResolvers.add(resolver);
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(testInterceptor());
+    }
+
+    @Bean
+    public FilterRegistrationBean hogeFilter() {
+        FilterRegistrationBean bean = new FilterRegistrationBean(new LoginFilter());
+        bean.addUrlPatterns("/*");
+        bean.setOrder(Integer.MIN_VALUE);
+        return bean;
     }
 }
