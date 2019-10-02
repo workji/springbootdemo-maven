@@ -1,8 +1,6 @@
 package com.ki.config;
 
-import com.ki.interceptor.LoginFilter;
 import com.ki.interceptor.LoginInterceptor;
-import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -22,11 +20,11 @@ public class WebMvcConfig implements WebMvcConfigurer {
         registry.addInterceptor(testInterceptor());
     }
 
-    @Bean
-    public FilterRegistrationBean hogeFilter() {
-        FilterRegistrationBean bean = new FilterRegistrationBean(new LoginFilter());
-        bean.addUrlPatterns("/*");
-        bean.setOrder(Integer.MIN_VALUE);
-        return bean;
-    }
+//    @Bean
+//    public FilterRegistrationBean hogeFilter() {
+//        FilterRegistrationBean bean = new FilterRegistrationBean(new LoginFilter());
+//        bean.addUrlPatterns("/*");
+//        bean.setOrder(Integer.MIN_VALUE);
+//        return bean;
+//    }
 }

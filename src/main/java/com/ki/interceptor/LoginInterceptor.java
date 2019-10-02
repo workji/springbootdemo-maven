@@ -1,7 +1,9 @@
 package com.ki.interceptor;
 
+import com.ki.entity.UserEntity;
 import com.ki.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import javax.servlet.http.HttpServletRequest;
@@ -19,40 +21,49 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
             throws Exception {
+        HttpSession session = request.getSession();
+        String urlPath = request.getRequestURI();
 
-        System.out.println("RequestURL: " + request.getRequestURL());
-        System.out.println("ContextPath: " + request.getContextPath());
-        String uri = request.getScheme() + "://" +   // "http" + "://
-                request.getServerName() +       // "myhost"
-                ":" +                           // ":"
-                request.getServerPort() +       // "8080"
-                request.getRequestURI() +       // "/people"
-                "?" +                           // "?"
-                request.getQueryString();       // "lastname=Fox&age=30"
+        // static resource -> Ok
+        if (urlPath.startsWith("/css") || urlPath.startsWith("/js")) {
+            return true;
+        }
 
-        String wantURL = request.getRequestURL()+"?"+request.getQueryString();
-        System.out.println(wantURL);
+        // already login -> OK
+        if (session.getAttribute("userId") != null) {
+            return true;
+        }
 
-//        String userName = (String)request.getAttribute("email");
-//        String password = (String)request.getAttribute("password");
-//        switch (request.getRequestURI().split("/")[0]) {
-//            case "login":
-//                UserEntity user = userRepository.findByUserEmailAndPassword(userName, password);
-//                if (user == null) {
-//                    System.out.println("Login Error");
-////                    response.sendRedirect("/login");
-////                    return false;
-//                }
-//                session.setAttribute("username", userName);
-//                break;
-//            default:
-//                userName = (String)session.getAttribute("username");
-//                if (userName == null) {
-////                    response.sendRedirect("/login");
-////                    return false;
-//                }
-////        }
+        ModelAndView modelAndView = new ModelAndView();
 
-        return true;
+        // login path
+        if (urlPath.startsWith("/login")) {
+            if ("GET".equals(request.getMethod())) {
+                // to login operation  -> OK
+                return true;
+            } else if ("POST".equals(request.getMethod())) {
+                // real login operation
+                UserEntity user = userRepository.findByUserEmailAndPassword(
+                        request.getParameter("email"),
+                        request.getParameter("password"));
+                if (user != null) {
+                    // login success
+                    session.setAttribute("userId", user);
+                    modelAndView.setViewName("login");
+//                    response.sendRedirect(request.getContextPath() + "/");
+                    return true;
+                }
+                // login failed
+                modelAndView.setViewName("login");
+//                response.sendRedirect(request.getContextPath() + "/login");
+                return false;
+            }
+        }
+
+        // need login
+        modelAndView.setViewName("index");
+//        response.sendRedirect(request.getContextPath() + "/login");
+
+        return false;
     }
 }
