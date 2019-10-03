@@ -19,7 +19,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(testInterceptor())
                 .addPathPatterns("/**")
-                .excludePathPatterns("/css/**","/js/**", "/vendor/**");
+                .excludePathPatterns("/css/**","/js/**", "/vendor/**", "/img/**");
     }
 
 //    @Bean

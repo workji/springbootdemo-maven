@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org" xmlns:layout="">
+
+    <th:block layout:fragment="defaultScript">
+
+    </th:block>
+
+    <script th:fragment="jquery"
+            src="/vendor/jquery/jquery.min.js"
+            th:src="@{/vendor/jquery/jquery.min.js}"></script>
+
+    <script th:fragment="bootstrap"
+            src="/vendor/bootstrap/js/bootstrap.bundle.min.js"
+            th:src="@{/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
+</html>
