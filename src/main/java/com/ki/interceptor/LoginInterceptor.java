@@ -3,7 +3,6 @@ package com.ki.interceptor;
 import com.ki.entity.UserEntity;
 import com.ki.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import javax.servlet.http.HttpServletRequest;
@@ -23,18 +22,22 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
             throws Exception {
         HttpSession session = request.getSession();
         String urlPath = request.getRequestURI();
+        String preUrl = (String)session.getAttribute("preUrl");
 
-        // static resource -> Ok
-        if (urlPath.startsWith("/css") || urlPath.startsWith("/js")) {
-            return true;
-        }
+        // when logout remove session flg
+        if (urlPath.startsWith("/logout")) {
+            session.removeAttribute("user");
+            // reload to login page
+            response.sendRedirect(request.getContextPath() + "/login");
+            return false;
+         }
 
         // already login -> OK
-        if (session.getAttribute("userId") != null) {
+        if (session.getAttribute("user") != null) {
+            session.removeAttribute("preUrl");
+            preUrl = null;
             return true;
         }
-
-        ModelAndView modelAndView = new ModelAndView();
 
         // login path
         if (urlPath.startsWith("/login")) {
@@ -48,22 +51,21 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
                         request.getParameter("password"));
                 if (user != null) {
                     // login success
-                    session.setAttribute("userId", user);
-                    modelAndView.setViewName("login");
-//                    response.sendRedirect(request.getContextPath() + "/");
-                    return true;
+                    session.setAttribute("user", user);
+                    response.sendRedirect(request.getContextPath() + (preUrl!=null?preUrl:"/"));
+                    return false;
+                } else {
+                    // login error
+                    response.sendRedirect(request.getContextPath() + "/login");
+                    return false;
                 }
-                // login failed
-                modelAndView.setViewName("login");
-//                response.sendRedirect(request.getContextPath() + "/login");
-                return false;
             }
         }
 
-        // need login
-        modelAndView.setViewName("index");
-//        response.sendRedirect(request.getContextPath() + "/login");
-
+        // save pre url for login success to redirect
+        session.setAttribute("preUrl", urlPath);
+        // other Not logged path reload to login page
+        response.sendRedirect(request.getContextPath() + "/login");
         return false;
     }
 }

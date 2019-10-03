@@ -17,7 +17,9 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(testInterceptor());
+        registry.addInterceptor(testInterceptor())
+                .addPathPatterns("/**")
+                .excludePathPatterns("/css/**","/js/**", "/vendor/**");
     }
 
 //    @Bean

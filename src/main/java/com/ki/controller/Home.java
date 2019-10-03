@@ -20,6 +20,6 @@ public class Home {
     public String test1(Model model) {
         model.addAttribute("singers", singerRepository.findAll());
         model.addAttribute("multikeys", multiRepository.findAll());
-        return "home";
+        return "index";
     }
 }
