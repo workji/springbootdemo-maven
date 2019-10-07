@@ -1,11 +1,15 @@
 package com.ki.controller;
 
+import com.ki.entity.Alert;
 import com.ki.repository.MultiRepository;
 import com.ki.repository.SingerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+
+import java.util.List;
 
 @Controller
 public class Home {
@@ -17,7 +21,8 @@ public class Home {
     private MultiRepository multiRepository;
 
     @GetMapping("/")
-    public String test1(Model model) {
+    public String test1(@ModelAttribute("alerts") List<Alert> alerts, Model model) {
+        alerts.forEach(System.out::println);
         model.addAttribute("singers", singerRepository.findAll());
         model.addAttribute("multikeys", multiRepository.findAll());
         return "index";
