@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
+import java.io.IOException;
 import java.util.List;
 
 @Controller
@@ -26,5 +27,10 @@ public class Home {
         model.addAttribute("singers", singerRepository.findAll());
         model.addAttribute("multikeys", multiRepository.findAll());
         return "index";
+    }
+
+    @GetMapping("/doerror")
+    public void test3() throws IOException {
+        throw new IOException("test");
     }
 }
