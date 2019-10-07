@@ -1,11 +1,13 @@
 package com.ki.controller;
 
+import com.ki.config.StringEditor;
 import com.ki.entity.Alert;
 import com.ki.repository.MultiRepository;
 import com.ki.repository.SingerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -19,6 +21,12 @@ public class Home {
 
     @Autowired
     private MultiRepository multiRepository;
+
+    @InitBinder
+    public void initBinder(WebDataBinder binder) {
+        binder.registerCustomEditor(String.class, new StringEditor());
+        System.out.println("Init Binder OK.");
+    }
 
     @GetMapping("/")
     public String test1(@ModelAttribute("alerts") List<Alert> alerts, Model model) {
