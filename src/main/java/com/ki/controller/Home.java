@@ -6,8 +6,7 @@ import com.ki.repository.SingerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.util.List;
@@ -32,5 +31,11 @@ public class Home {
     @GetMapping("/doerror")
     public void test3() throws IOException {
         throw new IOException("test");
+    }
+
+    @PostMapping("/search")
+    public String test4(@RequestParam("searchKey") String searchKey) {
+        System.out.println(searchKey); // want ">GoXXXGo<" , but "XXX"
+        return "index";
     }
 }
